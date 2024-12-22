@@ -1,0 +1,17 @@
+dataset=read.csv("Admission_Predict.csv")
+gre=dataset[,2]
+coa=dataset[,9]
+data=data.frame(gre,coa)
+View(data)
+library(caTools)
+set.seed(42)
+split=sample.split(data$coa,SplitRatio=0.7)
+training_set=subset(data,split==TRUE)
+View(training_set)
+testing_set=subset(data,split==FALSE)
+View(testing_set)
+regressor=lm(formula = coa~gre,data = training_set)
+y_pred=predict(regressor,newdata=testing_set)
+View(y_pred)
+plot(testing_set$gre,testing_set$coa,type='p',col='purple',xlab = 'GRE',ylab = 'COA')
+lines(testing_set$gre,y_pred,type = 'o',col='maroon')
